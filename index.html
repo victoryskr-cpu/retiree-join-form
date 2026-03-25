@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>공공운수노조 퇴직자지부 준비위원회 가입 신청</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --line: #d9e0e8;
+      --label: #eef3f8;
+      --text: #1f2937;
+      --sub: #4b5563;
+      --point: #1f4e79;
+      --btn: #1f4e79;
+      --btn-hover: #173a5b;
+      --danger: #b91c1c;
+      --success: #166534;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      text-align: center;
+      font-size: 28px;
+      color: var(--point);
+      line-height: 1.3;
+    }
+
+    .intro {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--sub);
+    }
+
+    .intro p {
+      margin: 0 0 8px;
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--point);
+      margin: 28px 0 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #c9d2dc;
+      border-radius: 8px;
+      padding: 11px 12px;
+      font-size: 15px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .choice-box {
+      border: 1px solid #c9d2dc;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+    }
+
+    .choice-group label {
+      font-weight: 400;
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .choice-group input {
+      margin-top: 2px;
+    }
+
+    .sub-box {
+      margin-top: 10px;
+    }
+
+    .help {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .agree-box {
+      border: 1px solid var(--line);
+      background: #fafbfd;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .agree-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+    }
+
+    .agree-item input {
+      margin-top: 4px;
+      transform: scale(1.05);
+    }
+
+    .account-box {
+      border: 1px solid var(--line);
+      background: #fafbfd;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 15px;
+    }
+
+    .actions {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      border: 0;
+      background: var(--btn);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      min-width: 180px;
+    }
+
+    button:hover {
+      background: var(--btn-hover);
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    .result.success {
+      display: block;
+      background: #ecfdf3;
+      border: 1px solid #b7ebc6;
+      color: var(--success);
+    }
+
+    .result.error {
+      display: block;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 720px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .wrap {
+        padding: 16px 12px 40px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>공공운수노조 퇴직자지부 준비위원회 가입 신청</h1>
+
+      <div class="intro">
+        <p>공공운수노조 퇴직자지부 준비위원회는 공공운수노조 조합원으로 활동하다 정년퇴직한 사람, 정년퇴직 전 공공부문에서 일한 사람, 만 60세 이상으로 현재 공공영역에서 일하고 있는 고령노동자 누구나 가입할 수 있습니다.</p>
+        <p>민주노총 산하 산별조직 가운데 처음으로 만들어진 공공운수노조 퇴직자지부 준비위원회는 초고령시대 고령노동자의 노동권과 삶의 권리를 지키기 위해 다양한 활동을 이어가고 있습니다.</p>
+      </div>
+
+      <form id="joinForm">
+        <div class="section-title">기본정보</div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="name" class="required">성명</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+
+          <div class="field">
+            <label for="birthDate" class="required">생년월일</label>
+            <input type="date" id="birthDate" name="birthDate" required />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="phone" class="required">휴대전화번호</label>
+            <input type="text" id="phone" name="phone" placeholder="예: 010-1234-5678" required />
+          </div>
+
+          <div class="field">
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="address">주소</label>
+            <input type="text" id="address" name="address" />
+          </div>
+
+          <div class="field">
+            <label for="region">거주지역</label>
+            <input type="text" id="region" name="region" placeholder="예: 서울, 경기, 부산" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="currentWork">현재 하고 있는 일</label>
+            <input type="text" id="currentWork" name="currentWork" />
+          </div>
+
+          <div class="field">
+            <label for="note">비고</label>
+            <input type="text" id="note" name="note" />
+          </div>
+        </div>
+
+        <div class="section-title">퇴직 및 노동조합 정보</div>
+
+        <div class="field">
+          <label class="required">현재상태</label>
+          <div class="choice-box">
+            <div class="choice-group">
+              <label><input type="radio" name="status" value="이미 퇴직" required /> 이미 퇴직</label>
+              <label><input type="radio" name="status" value="퇴직 예정" /> 퇴직 예정</label>
+              <label><input type="radio" name="status" value="만 60세 이상 재직 중" /> 만 60세 이상 재직 중</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="retirementDate">퇴직일/예정일</label>
+            <input type="date" id="retirementDate" name="retirementDate" />
+          </div>
+
+          <div class="field">
+            <label for="previousWorkplace">퇴직 전 직장명</label>
+            <input type="text" id="previousWorkplace" name="previousWorkplace" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="previousJob">퇴직 전 직종/직무</label>
+            <input type="text" id="previousJob" name="previousJob" />
+          </div>
+
+          <div class="field">
+            <label class="required">퇴직 전 소속 노동조합</label>
+            <div class="choice-box">
+              <div class="choice-group">
+                <label><input type="radio" name="previousUnionType" value="공공운수노조" required /> 공공운수노조</label>
+                <label><input type="radio" name="previousUnionType" value="민주노총 타 산별조직" /> 민주노총 타 산별조직</label>
+                <label><input type="radio" name="previousUnionType" value="기타" /> 기타</label>
+                <label><input type="radio" name="previousUnionType" value="무소속·비조합원" /> 무소속·비조합원</label>
+              </div>
+
+              <div class="sub-box" id="unionNameWrap" style="display:none;">
+                <label for="previousUnionName">소속 조직명</label>
+                <input type="text" id="previousUnionName" name="previousUnionName" placeholder="예: 전국교육공무직본부" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">조합비</div>
+
+        <div class="field">
+          <label class="required">조합비</label>
+          <div class="choice-box">
+            <div class="choice-group">
+              <label><input type="radio" name="feeType" value="5000원" required /> 5,000원</label>
+              <label><input type="radio" name="feeType" value="10000원" /> 10,000원</label>
+              <label><input type="radio" name="feeType" value="기타" /> 기타</label>
+            </div>
+
+            <div class="sub-box" id="feeOtherWrap" style="display:none;">
+              <label for="feeOtherAmount">기타 금액</label>
+              <input type="text" id="feeOtherAmount" name="feeOtherAmount" placeholder="숫자만 입력" />
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>납부계좌</label>
+            <div class="account-box">
+              카카오뱅크 3333-22-3406925 허영구
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="depositorName">입금자명</label>
+            <input type="text" id="depositorName" name="depositorName" />
+          </div>
+        </div>
+
+        <div class="section-title">의견 및 동의</div>
+
+        <div class="field">
+          <label for="requestToUnion">노조에 바라는 점</label>
+          <textarea id="requestToUnion" name="requestToUnion"></textarea>
+        </div>
+
+        <div class="agree-box">
+          <label class="agree-item">
+            <input type="checkbox" id="agree1" required />
+            <span>공공운수노조의 선언·강령과 규약 취지에 동의하며 가입을 신청합니다.</span>
+          </label>
+
+          <label class="agree-item">
+            <input type="checkbox" id="agree2" required />
+            <span>개인정보 수집·이용에 동의하며, 기재 내용이 사실과 다르지 않음을 확인합니다.</span>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">가입 신청 제출</button>
+        </div>
+
+        <div id="resultBox" class="result"></div>
+        <div class="footer-note">제출 후 잠시 기다리면 접수 결과가 표시됩니다.</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 여기에 Apps Script 웹앱 URL을 넣으세요.
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyglRJbcBZbTNQVW1Jt5w7jHsYviPYl-u4mtLgFcZoHJ3ZBKvWexF6KIHcmHZ_BtYCs/exec";
+
+    const form = document.getElementById("joinForm");
+    const resultBox = document.getElementById("resultBox");
+    const submitBtn = document.getElementById("submitBtn");
+    const unionNameWrap = document.getElementById("unionNameWrap");
+    const previousUnionName = document.getElementById("previousUnionName");
+    const feeOtherWrap = document.getElementById("feeOtherWrap");
+    const feeOtherAmount = document.getElementById("feeOtherAmount");
+
+    function showResult(type, message) {
+      resultBox.className = "result " + type;
+      resultBox.textContent = message;
+    }
+
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "";
+    }
+
+    function toggleUnionName() {
+      const value = getCheckedValue("previousUnionType");
+      const needsName =
+        value === "공공운수노조" ||
+        value === "민주노총 타 산별조직" ||
+        value === "기타";
+
+      unionNameWrap.style.display = needsName ? "block" : "none";
+      previousUnionName.required = needsName;
+
+      if (!needsName) {
+        previousUnionName.value = "";
+      }
+    }
+
+    function toggleFeeOther() {
+      const value = getCheckedValue("feeType");
+      const isOther = value === "기타";
+
+      feeOtherWrap.style.display = isOther ? "block" : "none";
+      feeOtherAmount.required = isOther;
+
+      if (!isOther) {
+        feeOtherAmount.value = "";
+      }
+    }
+
+    document.querySelectorAll('input[name="previousUnionType"]').forEach(el => {
+      el.addEventListener("change", toggleUnionName);
+    });
+
+    document.querySelectorAll('input[name="feeType"]').forEach(el => {
+      el.addEventListener("change", toggleFeeOther);
+    });
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      if (WEB_APP_URL === "여기에_웹앱_URL_입력") {
+        showResult("error", "웹앱 URL이 아직 입력되지 않았습니다.");
+        return;
+      }
+
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        birthDate: document.getElementById("birthDate").value,
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        region: document.getElementById("region").value.trim(),
+        currentWork: document.getElementById("currentWork").value.trim(),
+        note: document.getElementById("note").value.trim(),
+        status: getCheckedValue("status"),
+        retirementDate: document.getElementById("retirementDate").value,
+        previousWorkplace: document.getElementById("previousWorkplace").value.trim(),
+        previousJob: document.getElementById("previousJob").value.trim(),
+        previousUnionType: getCheckedValue("previousUnionType"),
+        previousUnionName: previousUnionName.value.trim(),
+        feeType: getCheckedValue("feeType"),
+        feeOtherAmount: feeOtherAmount.value.trim(),
+        depositorName: document.getElementById("depositorName").value.trim(),
+        requestToUnion: document.getElementById("requestToUnion").value.trim(),
+        agree1: document.getElementById("agree1").checked,
+        agree2: document.getElementById("agree2").checked
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "제출 중...";
+      showResult("success", "제출 중입니다. 잠시만 기다려 주세요.");
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (result.result === "success") {
+          showResult(
+            "success",
+            "가입 신청이 정상 접수되었습니다.\n\n접수번호: " + (result.receiptNo || "")
+          );
+          form.reset();
+          toggleUnionName();
+          toggleFeeOther();
+        } else {
+          showResult("error", "접수 중 오류가 발생했습니다.\n\n" + (result.message || "알 수 없는 오류"));
+        }
+      } catch (error) {
+        showResult("error", "제출 중 오류가 발생했습니다.\n\n" + error);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "가입 신청 제출";
+      }
+    });
+  </script>
+</body>
+</html>
