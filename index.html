@@ -195,7 +195,7 @@
 
     .choice-group input[type="radio"] {
       margin: 0;
-      transform: scale(1.2);
+      transform: scale(1.15);
       flex-shrink: 0;
     }
 
@@ -248,86 +248,61 @@
       margin-top: 8px;
     }
 
-    .fee-field {
-      gap: 2px;
+    .fee-row-field {
+      gap: 6px;
     }
 
-    .fee-inline-box {
+    .fee-row-top {
       display: grid;
       grid-template-columns: 1.55fr 1fr;
       gap: 14px;
-      align-items: edn;
+      align-items: end;
     }
 
-    .fee-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    
-    .fee-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: 4px;
+    .fee-main-label,
+    .fee-side-label {
+      margin: 0;
+      line-height: 1.2;
     }
 
-    .fee-left .choice-box {
+    .fee-row-body {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .fee-left-box,
+    .fee-right-box {
+      align-self: start;
+    }
+
+    .fee-choice-box {
       padding: 8px 12px;
-      min-height: 52px;
+      min-height: 48px;
       display: flex;
       align-items: center;
     }
 
-    .fee-left .choice-group {
+    .fee-choice-group {
       gap: 4px 18px;
       align-items: center;
     }
 
-    .fee-left .choice-group label {
+    .fee-choice-group label {
+      margin: 0;
       line-height: 1.2;
     }
 
-    .fee-right {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .fee-right label {
-      margin: 0;
-    }
-
-    .fee-right input[type="text"] {
-      height: 52px;
-      min-height: 52px;
+    .fee-right-box input[type="text"] {
+      height: 48px;
+      min-height: 48px;
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
     #feeOtherWrap {
       display: none;
-    }
-
-    .agree-box {
-      border: 1px solid var(--line);
-      background: rgba(250, 251, 253, 0.96);
-      border-radius: 14px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .agree-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      font-size: 18px;
-      line-height: 1.65;
-    }
-
-    .agree-item input {
-      margin-top: 5px;
-      transform: scale(1.18);
-      flex-shrink: 0;
     }
 
     .signature-box {
@@ -354,15 +329,40 @@
       display: block;
       width: 100%;
       height: 220px;
-      touch-action: none;
       background: #fff;
+      touch-action: none;
       cursor: crosshair;
     }
 
     .signature-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       margin-top: 12px;
+    }
+
+    .agree-box {
+      border: 1px solid var(--line);
+      background: rgba(250, 251, 253, 0.96);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .agree-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .agree-item input {
+      margin-top: 5px;
+      transform: scale(1.1);
+      flex-shrink: 0;
     }
 
     .actions {
@@ -489,8 +489,9 @@
       }
 
       .grid-2,
-      .fee-inline-box,
-      .address-row {
+      .address-row,
+      .fee-row-top,
+      .fee-row-body {
         grid-template-columns: 1fr;
         gap: 14px;
       }
@@ -518,9 +519,9 @@
         justify-content: flex-start;
       }
 
-      .fee-right input[type="text"] {
+      .fee-right-box input[type="text"] {
         height: auto;
-        min-height: 52px;
+        min-height: 48px;
       }
 
       #signatureCanvas {
@@ -547,7 +548,6 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <div style="font-size:28px;color:red;font-weight:800;">git test 8888</div>
       <h1>공공운수노조 퇴직자지부 준비위원회 가입 신청</h1>
 
       <div class="intro">
@@ -589,7 +589,9 @@
               <button type="button" class="address-search-btn" onclick="openPostcode()">주소 검색</button>
               <input type="text" id="postcode" name="postcode" readonly required />
             </div>
+
             <div id="postcodeLayer" class="postcode-layer"></div>
+
             <div class="postcode-close-row" id="postcodeCloseRow">
               <button type="button" class="postcode-close-btn" onclick="closePostcodeLayer()">주소검색 닫기</button>
             </div>
@@ -678,12 +680,16 @@
           <span class="section-sub">(납부계좌: 카카오뱅크 3333-22-3406925 허영구)</span>
         </div>
 
-        <div class="field fee-field">
-          <label class="required">조합비</label>
-          <div class="fee-inline-box">
-            <div class="fee-left">
-              <div class="choice-box">
-                <div class="choice-group">
+        <div class="field fee-row-field">
+          <div class="fee-row-top">
+            <label class="required fee-main-label">조합비</label>
+            <label for="depositorName" class="fee-side-label">입금자명</label>
+          </div>
+
+          <div class="fee-row-body">
+            <div class="fee-left-box">
+              <div class="choice-box fee-choice-box">
+                <div class="choice-group fee-choice-group">
                   <label><input type="radio" name="feeType" value="5000원" required /> 5,000원</label>
                   <label><input type="radio" name="feeType" value="10000원" /> 10,000원</label>
                   <label><input type="radio" name="feeType" value="기타" /> 기타</label>
@@ -696,8 +702,7 @@
               </div>
             </div>
 
-            <div class="fee-right">
-              <label for="depositorName">입금자명</label>
+            <div class="fee-right-box">
               <input type="text" id="depositorName" name="depositorName" />
             </div>
           </div>
@@ -879,7 +884,6 @@
 
       const postcode = new daum.Postcode({
         oncomplete: function (data) {
-          alert("주소 선택됨: " + (data.zonecode || ""));
           const baseAddress =
             data.userSelectedType === "R" ? data.roadAddress : data.jibunAddress;
 
@@ -903,7 +907,6 @@
     function closePostcodeLayer() {
       const layer = document.getElementById("postcodeLayer");
       const closeRow = document.getElementById("postcodeCloseRow");
-
       layer.style.display = "none";
       closeRow.style.display = "none";
       layer.innerHTML = "";
