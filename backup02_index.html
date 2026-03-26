@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>공공운수노조 퇴직자지부 준비위원회 가입 신청</title>
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <style>
+    :root {
+      --card: rgba(255, 255, 255, 0.97);
+      --line: #d6dee8;
+      --text: #1f2937;
+      --sub: #4b5563;
+      --point: #1f4e79;
+      --btn: #1f4e79;
+      --btn-hover: #173a5b;
+      --danger: #b91c1c;
+      --modal-bg: rgba(15, 23, 42, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+      background: linear-gradient(180deg, #f3f6fa 0%, #eaf0f6 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 16px 56px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px 26px 34px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("./flag-bg.png") no-repeat center 120px;
+      background-size: 88%;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      text-align: center;
+      font-size: 34px;
+      color: var(--point);
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    .intro {
+      border: 1px solid var(--line);
+      background: rgba(248, 250, 252, 0.95);
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 18px;
+      color: var(--sub);
+    }
+
+    .intro p {
+      margin: 0 0 10px;
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 25px;
+      font-weight: 800;
+      color: var(--point);
+      margin: 34px 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #dce5ef;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      font-weight: 600;
+      color: #5b6778;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .grid-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-weight: 800;
+      font-size: 18px;
+      color: #223043;
+      word-break: keep-all;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      border: 1px solid #c8d3df;
+      border-radius: 12px;
+      padding: 15px 16px;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #8b96a6;
+    }
+
+    textarea {
+      min-height: 56px;
+      resize: vertical;
+    }
+
+    .choice-box {
+      border: 1px solid #c8d3df;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+    }
+
+    .choice-group.single-line {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .choice-group label {
+      font-weight: 500;
+      font-size: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .choice-group input[type="radio"] {
+      margin: 0;
+      transform: scale(1.2);
+      flex-shrink: 0;
+    }
+
+    .sub-box {
+      margin-top: 10px;
+    }
+
+    .address-row {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .address-search-btn,
+    .signature-clear-btn,
+    .modal-close-btn,
+    .postcode-close-btn {
+      border: 0;
+      background: var(--btn);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 14px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .address-search-btn:hover,
+    .signature-clear-btn:hover,
+    .modal-close-btn:hover,
+    .postcode-close-btn:hover {
+      background: var(--btn-hover);
+    }
+
+    .postcode-layer {
+      display: none;
+      margin-top: 10px;
+      border: 1px solid #c8d3df;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      min-height: 420px;
+    }
+
+    .postcode-close-row {
+      display: none;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .fee-field {
+      gap: 2px;
+    }
+
+    .fee-inline-box {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .fee-left,
+    .fee-right {
+      align-self: start;
+    }
+
+    .fee-left .choice-box {
+      padding: 8px 12px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+    }
+
+    .fee-left .choice-group {
+      gap: 4px 18px;
+      align-items: center;
+    }
+
+    .fee-left .choice-group label {
+      line-height: 1.2;
+    }
+
+    .fee-right {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .fee-right label {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .fee-right input[type="text"] {
+      height: 52px;
+      min-height: 52px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    #feeOtherWrap {
+      display: none;
+    }
+
+    .agree-box {
+      border: 1px solid var(--line);
+      background: rgba(250, 251, 253, 0.96);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .agree-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .agree-item input {
+      margin-top: 5px;
+      transform: scale(1.18);
+      flex-shrink: 0;
+    }
+
+    .signature-box {
+      border: 1px solid #c8d3df;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 14px;
+    }
+
+    .signature-guide {
+      font-size: 16px;
+      color: #5f6b7c;
+      margin-bottom: 10px;
+    }
+
+    .signature-canvas-wrap {
+      border: 1px dashed #9fb0c2;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #signatureCanvas {
+      display: block;
+      width: 100%;
+      height: 220px;
+      touch-action: none;
+      background: #fff;
+      cursor: crosshair;
+    }
+
+    .signature-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
+    .actions {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .submit-btn {
+      border: 0;
+      background: var(--btn);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 18px 30px;
+      border-radius: 14px;
+      cursor: pointer;
+      min-width: 240px;
+      box-shadow: 0 6px 16px rgba(31, 78, 121, 0.25);
+    }
+
+    .submit-btn:hover {
+      background: var(--btn-hover);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 16px;
+      color: #5f6b7c;
+    }
+
+    .bottom-logo {
+      margin-top: 34px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .bottom-logo img {
+      max-width: 420px;
+      width: 78%;
+      height: auto;
+      opacity: 0.95;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--modal-bg);
+      padding: 18px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: 100%;
+      max-width: 460px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.2);
+      padding: 26px 22px 22px;
+      text-align: center;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--point);
+      margin-bottom: 12px;
+    }
+
+    .modal-message {
+      font-size: 18px;
+      color: var(--text);
+      white-space: pre-wrap;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap {
+        padding: 16px 10px 36px;
+      }
+
+      .card {
+        padding: 18px 16px 26px;
+        border-radius: 14px;
+      }
+
+      .card::before {
+        background-position: center 80px;
+        background-size: 115%;
+        opacity: 0.07;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-bottom: 14px;
+      }
+
+      .intro {
+        font-size: 17px;
+        padding: 16px 14px;
+      }
+
+      .section-title {
+        font-size: 22px;
+        margin-top: 28px;
+      }
+
+      .section-sub {
+        font-size: 14px;
+      }
+
+      .grid-2,
+      .fee-inline-box,
+      .address-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      label {
+        font-size: 17px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="date"],
+      textarea {
+        font-size: 17px;
+        padding: 14px 14px;
+      }
+
+      .choice-group label,
+      .agree-item,
+      .modal-message {
+        font-size: 17px;
+      }
+
+      .choice-group.single-line {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      .fee-right input[type="text"] {
+        height: auto;
+        min-height: 52px;
+      }
+
+      #signatureCanvas {
+        height: 200px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        font-size: 20px;
+        min-width: 0;
+      }
+
+      .bottom-logo img {
+        width: 96%;
+        max-width: 360px;
+      }
+
+      .modal-title {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>공공운수노조 퇴직자지부 준비위원회 가입 신청</h1>
+
+      <div class="intro">
+        <p>공공운수노조 퇴직자지부 준비위원회는 공공운수노조 조합원으로 활동하다 정년퇴직한 사람, 정년퇴직 전 공공부문에서 일한 사람, 만 60세 이상으로 현재 공공영역에서 일하고 있는 고령노동자 누구나 가입할 수 있습니다.</p>
+        <p>민주노총 산하 산별조직 가운데 처음으로 만들어진 공공운수노조 퇴직자지부 준비위원회는 초고령시대 고령노동자의 노동권과 삶의 권리를 지키기 위해 다양한 활동을 이어가고 있습니다.</p>
+      </div>
+
+      <form id="joinForm">
+        <div class="section-title">기본정보</div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="name" class="required">성명</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+
+          <div class="field">
+            <label for="birthDate" class="required">생년월일</label>
+            <input type="date" id="birthDate" name="birthDate" required />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="phone" class="required">휴대전화번호</label>
+            <input type="text" id="phone" name="phone" placeholder="예: 010-1234-5678" required />
+          </div>
+
+          <div class="field">
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="postcode" class="required">우편번호</label>
+            <div class="address-row">
+              <button type="button" class="address-search-btn" onclick="openPostcode()">주소 검색</button>
+              <input type="text" id="postcode" name="postcode" readonly required />
+            </div>
+            <div id="postcodeLayer" class="postcode-layer"></div>
+            <div class="postcode-close-row" id="postcodeCloseRow">
+              <button type="button" class="postcode-close-btn" onclick="closePostcodeLayer()">주소검색 닫기</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="region" class="required">거주지역</label>
+            <input type="text" id="region" name="region" placeholder="예: 서울, 경기, 부산" required />
+          </div>
+        </div>
+
+        <div class="grid-1">
+          <div class="field">
+            <label for="address" class="required">주소</label>
+            <input type="text" id="address" name="address" readonly required />
+          </div>
+        </div>
+
+        <div class="grid-1">
+          <div class="field">
+            <label for="addressDetail">상세주소</label>
+            <input type="text" id="addressDetail" name="addressDetail" placeholder="동·호수 등 상세주소를 입력하세요" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="currentWork">현재 하고 있는 일</label>
+            <input type="text" id="currentWork" name="currentWork" />
+          </div>
+
+          <div class="field">
+            <label for="note">비고</label>
+            <input type="text" id="note" name="note" />
+          </div>
+        </div>
+
+        <div class="section-title">퇴직 및 노동조합 정보</div>
+
+        <div class="grid-1">
+          <div class="field">
+            <label class="required">현재상태</label>
+            <div class="choice-box">
+              <div class="choice-group single-line">
+                <label><input type="radio" name="status" value="이미 퇴직" required /> 이미 퇴직</label>
+                <label><input type="radio" name="status" value="퇴직 예정" /> 퇴직 예정</label>
+                <label><input type="radio" name="status" value="만 60세 이상 재직 중" /> 만 60세 이상 재직 중</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="previousWorkplace" class="required">퇴직 전 직장명</label>
+            <input type="text" id="previousWorkplace" name="previousWorkplace" required />
+          </div>
+
+          <div class="field">
+            <label for="previousJob">퇴직 전 직종/직무</label>
+            <input type="text" id="previousJob" name="previousJob" />
+          </div>
+        </div>
+
+        <div class="grid-1">
+          <div class="field">
+            <label class="required">퇴직 전 소속 노동조합</label>
+            <div class="choice-box">
+              <div class="choice-group">
+                <label><input type="radio" name="previousUnionType" value="공공운수노조" required /> 공공운수노조</label>
+                <label><input type="radio" name="previousUnionType" value="민주노총 타 산별조직" /> 민주노총 타 산별조직</label>
+                <label><input type="radio" name="previousUnionType" value="기타" /> 기타</label>
+                <label><input type="radio" name="previousUnionType" value="무소속·비조합원" /> 무소속·비조합원</label>
+              </div>
+
+              <div class="sub-box" id="unionNameWrap" style="display:none;">
+                <label for="previousUnionName">소속 조직명</label>
+                <input type="text" id="previousUnionName" name="previousUnionName" placeholder="예: 전국교육공무직본부" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">
+          조합비
+          <span class="section-sub">(납부계좌: 카카오뱅크 3333-22-3406925 허영구)</span>
+        </div>
+
+        <div class="field fee-field">
+          <label class="required">조합비</label>
+          <div class="fee-inline-box">
+            <div class="fee-left">
+              <div class="choice-box">
+                <div class="choice-group">
+                  <label><input type="radio" name="feeType" value="5000원" required /> 5,000원</label>
+                  <label><input type="radio" name="feeType" value="10000원" /> 10,000원</label>
+                  <label><input type="radio" name="feeType" value="기타" /> 기타</label>
+                </div>
+              </div>
+
+              <div class="sub-box" id="feeOtherWrap">
+                <label for="feeOtherAmount">기타 금액</label>
+                <input type="text" id="feeOtherAmount" name="feeOtherAmount" placeholder="숫자만 입력" />
+              </div>
+            </div>
+
+            <div class="fee-right">
+              <label for="depositorName">입금자명</label>
+              <input type="text" id="depositorName" name="depositorName" />
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">의견 및 동의</div>
+
+        <div class="field">
+          <label for="requestToUnion">노조에 바라는 점</label>
+          <textarea id="requestToUnion" name="requestToUnion"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="required">서명</label>
+          <div class="signature-box">
+            <div class="signature-guide">아래 칸에 손가락이나 마우스로 서명해 주세요.</div>
+            <div class="signature-canvas-wrap">
+              <canvas id="signatureCanvas"></canvas>
+            </div>
+            <div class="signature-actions">
+              <button type="button" class="signature-clear-btn" id="clearSignatureBtn">서명 지우기</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="agree-box">
+          <label class="agree-item">
+            <input type="checkbox" id="agree1" required />
+            <span>본인은 전국공공운수사회서비스노조의 선언, 강령에 찬성하고 규약을 준수하며 퇴직 노동자의 단결과 연대, 조직의 확대․강화에 앞장설 것을 결의하며 조합원 가입 신청서를 제출합니다.</span>
+          </label>
+
+          <label class="agree-item">
+            <input type="checkbox" id="agree2" required />
+            <span>개인정보 수집·이용에 동의하며, 기재 내용이 사실과 다르지 않음을 확인합니다.</span>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn" class="submit-btn">가입 신청 제출</button>
+        </div>
+
+        <div class="footer-note">제출 후 잠시 기다리면 접수 결과가 안내됩니다.</div>
+
+        <div class="bottom-logo">
+          <img src="./logo_union.png" alt="민주노총 전국공공운수사회서비스노조 로고" />
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="resultModal">
+    <div class="modal-panel">
+      <div class="modal-title" id="modalTitle">안내</div>
+      <div class="modal-message" id="modalMessage"></div>
+      <button type="button" class="modal-close-btn" id="modalCloseBtn">확인</button>
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyglRJbcBZbTNQVW1Jt5w7jHsYviPYl-u4mtLgFcZoHJ3ZBKvWexF6KIHcmHZ_BtYCs/exec";
+
+    const form = document.getElementById("joinForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const unionNameWrap = document.getElementById("unionNameWrap");
+    const previousUnionName = document.getElementById("previousUnionName");
+    const feeOtherWrap = document.getElementById("feeOtherWrap");
+    const feeOtherAmount = document.getElementById("feeOtherAmount");
+
+    const resultModal = document.getElementById("resultModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+    const canvas = document.getElementById("signatureCanvas");
+    const clearSignatureBtn = document.getElementById("clearSignatureBtn");
+    const ctx = canvas.getContext("2d");
+
+    let drawing = false;
+    let hasSignature = false;
+
+    function resizeCanvas() {
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(ratio, ratio);
+      ctx.lineWidth = 2.4;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#111827";
+    }
+
+    function clearSignature() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hasSignature = false;
+    }
+
+    function getPosition(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDraw(e) {
+      e.preventDefault();
+      drawing = true;
+      const pos = getPosition(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const pos = getPosition(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      hasSignature = true;
+    }
+
+    function endDraw() {
+      drawing = false;
+    }
+
+    function showModal(title, message) {
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
+      resultModal.classList.add("show");
+    }
+
+    function closeModal() {
+      resultModal.classList.remove("show");
+    }
+
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "";
+    }
+
+    function toggleUnionName() {
+      const value = getCheckedValue("previousUnionType");
+      const needsName =
+        value === "공공운수노조" ||
+        value === "민주노총 타 산별조직" ||
+        value === "기타";
+
+      unionNameWrap.style.display = needsName ? "block" : "none";
+      previousUnionName.required = needsName;
+
+      if (!needsName) {
+        previousUnionName.value = "";
+      }
+    }
+
+    function toggleFeeOther() {
+      const value = getCheckedValue("feeType");
+      const isOther = value === "기타";
+
+      feeOtherWrap.style.display = isOther ? "block" : "none";
+      feeOtherAmount.required = isOther;
+
+      if (!isOther) {
+        feeOtherAmount.value = "";
+      }
+    }
+
+    function openPostcode() {
+      const layer = document.getElementById("postcodeLayer");
+      const closeRow = document.getElementById("postcodeCloseRow");
+
+      layer.style.display = "block";
+      closeRow.style.display = "flex";
+      layer.innerHTML = "";
+
+      const postcode = new daum.Postcode({
+        oncomplete: function (data) {
+          const baseAddress =
+            data.userSelectedType === "R" ? data.roadAddress : data.jibunAddress;
+
+          document.getElementById("postcode").value = data.zonecode || "";
+          document.getElementById("address").value = baseAddress || "";
+          document.getElementById("region").value = data.sido || "";
+
+          closePostcodeLayer();
+
+          setTimeout(function () {
+            document.getElementById("addressDetail").focus();
+          }, 50);
+        },
+        width: "100%",
+        height: "420px"
+      });
+
+      postcode.embed(layer);
+    }
+
+    function closePostcodeLayer() {
+      const layer = document.getElementById("postcodeLayer");
+      const closeRow = document.getElementById("postcodeCloseRow");
+
+      layer.style.display = "none";
+      closeRow.style.display = "none";
+      layer.innerHTML = "";
+    }
+
+    document.querySelectorAll('input[name="previousUnionType"]').forEach((el) => {
+      el.addEventListener("change", toggleUnionName);
+    });
+
+    document.querySelectorAll('input[name="feeType"]').forEach((el) => {
+      el.addEventListener("change", toggleFeeOther);
+    });
+
+    modalCloseBtn.addEventListener("click", closeModal);
+    resultModal.addEventListener("click", function (e) {
+      if (e.target === resultModal) {
+        closeModal();
+      }
+    });
+
+    clearSignatureBtn.addEventListener("click", clearSignature);
+
+    canvas.addEventListener("mousedown", startDraw);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mouseup", endDraw);
+    canvas.addEventListener("mouseleave", endDraw);
+
+    canvas.addEventListener("touchstart", startDraw, { passive: false });
+    canvas.addEventListener("touchmove", draw, { passive: false });
+    canvas.addEventListener("touchend", endDraw);
+    canvas.addEventListener("touchcancel", endDraw);
+
+    window.addEventListener("resize", function () {
+      const saved = hasSignature ? canvas.toDataURL("image/png") : null;
+      resizeCanvas();
+      if (saved) {
+        const img = new Image();
+        img.onload = function () {
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            canvas.getBoundingClientRect().width,
+            canvas.getBoundingClientRect().height
+          );
+          hasSignature = true;
+        };
+        img.src = saved;
+      }
+    });
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      if (WEB_APP_URL === "여기에_웹앱_URL_입력") {
+        showModal("오류", "웹앱 URL이 아직 입력되지 않았습니다.");
+        return;
+      }
+
+      if (!hasSignature) {
+        showModal("안내", "서명을 입력해 주세요.");
+        return;
+      }
+
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        birthDate: document.getElementById("birthDate").value,
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        postcode: document.getElementById("postcode").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        addressDetail: document.getElementById("addressDetail").value.trim(),
+        region: document.getElementById("region").value.trim(),
+        currentWork: document.getElementById("currentWork").value.trim(),
+        note: document.getElementById("note").value.trim(),
+        status: getCheckedValue("status"),
+        previousWorkplace: document.getElementById("previousWorkplace").value.trim(),
+        previousJob: document.getElementById("previousJob").value.trim(),
+        previousUnionType: getCheckedValue("previousUnionType"),
+        previousUnionName: previousUnionName.value.trim(),
+        feeType: getCheckedValue("feeType"),
+        feeOtherAmount: feeOtherAmount.value.trim(),
+        depositorName: document.getElementById("depositorName").value.trim(),
+        requestToUnion: document.getElementById("requestToUnion").value.trim(),
+        agree1: document.getElementById("agree1").checked,
+        agree2: document.getElementById("agree2").checked,
+        signatureDataUrl: canvas.toDataURL("image/png")
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "제출 중...";
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (result.result === "success") {
+          showModal(
+            "접수 완료",
+            "가입 신청이 정상 접수되었습니다.\n\n접수번호: " + (result.receiptNo || "")
+          );
+          form.reset();
+          clearSignature();
+          toggleUnionName();
+          toggleFeeOther();
+          closePostcodeLayer();
+        } else {
+          showModal(
+            "접수 오류",
+            "접수 중 오류가 발생했습니다.\n\n" + (result.message || "알 수 없는 오류")
+          );
+        }
+      } catch (error) {
+        showModal("접수 오류", "제출 중 오류가 발생했습니다.\n\n" + error);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "가입 신청 제출";
+      }
+    });
+
+    resizeCanvas();
+    toggleUnionName();
+    toggleFeeOther();
+  </script>
+</body>
+</html>
